@@ -5,7 +5,7 @@ services:
     ports: 
       - 8080:80
     volumes:
-      - ./www:/srv/www:z
+      - ./www:/srv/www
       - ./nginx.conf:/etc/nginx/nginx.conf:z
     networks: 
       - my-network
@@ -14,7 +14,7 @@ services:
   phpfpm:
     image: "docker.io/library/php:7.4-fpm"
     volumes: 
-      - ./www:/srv/www:z
+      - ./www:/srv/www
     networks: 
       - my-network
   db:
