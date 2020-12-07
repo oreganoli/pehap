@@ -20,7 +20,7 @@ MYSQL_USER={whatever}
 MYSQL_PASSWORD={whatever}
 ```
 Develop your PHP apps and place your static files in the `www` directory. The normal web server will run on port 8080; PMA will be available on port 8081.  
-MySQL will keep its data in `datadir`.  
+MySQL will keep its data in the `datadir` directory, which you must manually create.  
 To run the environment, execute the following commands:
 ```bash
 $ podman-compose pull
