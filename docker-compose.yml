@@ -6,14 +6,47 @@ services:
       - 8080:80
     volumes:
       - ./www:/srv/www:z
-      - ./nginx.default.conf:/etc/nginx/nginx.conf:z
+      - ./nginx.conf:/etc/nginx/nginx.conf:z
     networks: 
       - my-network
+    depends_on:
+      - phpfpm
   phpfpm:
     image: "docker.io/library/php:7.4-fpm"
     volumes: 
       - ./www:/srv/www:z
     networks: 
       - my-network
+  db:
+    image: "docker.io/library/mariadb:latest"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    depends_on:
+      - phpfpm
+    networks: 
+      - my-network
+      - db-network
+    volumes: 
+      - ./datadir:/var/lib/mysql:z
+  pma:
+    image: "docker.io/library/phpmyadmin:latest"
+    ports: 
+      - 8081:90
+    depends_on:
+      - db
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    networks: 
+      - my-network
+      - db-network
+    volumes:
+      - ./ports.conf:/etc/apache2/ports.conf:z
 networks: 
   my-network:
+  db-network:
