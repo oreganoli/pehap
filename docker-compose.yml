@@ -1,0 +1,8 @@
+version: '3'
+services: 
+  serwer:
+    image: "docker.io/library/nginx:mainline"
+    ports: 
+      - "8080:80"
+    volumes:
+      - "./sites:/usr/share/nginx/html:z"
