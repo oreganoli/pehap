@@ -1,8 +1,19 @@
 version: '3'
 services: 
-  serwer:
+  server:
     image: "docker.io/library/nginx:mainline"
     ports: 
-      - "8080:80"
+      - 8080:80
     volumes:
-      - "./sites:/usr/share/nginx/html:z"
+      - ./www:/srv/www:z
+      - ./nginx.default.conf:/etc/nginx/nginx.conf:z
+    networks: 
+      - my-network
+  phpfpm:
+    image: "docker.io/library/php:7.4-fpm"
+    volumes: 
+      - ./www:/srv/www:z
+    networks: 
+      - my-network
+networks: 
+  my-network:
