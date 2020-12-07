@@ -12,11 +12,16 @@ services:
     depends_on:
       - phpfpm
   phpfpm:
-    image: "docker.io/library/php:7.4-fpm"
+    image: "docker.io/chialab/php:7.4-fpm"
     volumes: 
       - ./www:/srv/www:z
     networks: 
       - my-network
+      - db-network
+    environment: 
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
   db:
     image: "docker.io/library/mariadb:latest"
     environment:
@@ -27,7 +32,6 @@ services:
     depends_on:
       - phpfpm
     networks: 
-      - my-network
       - db-network
     volumes: 
       - ./datadir:/var/lib/mysql:z
@@ -43,7 +47,6 @@ services:
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     networks: 
-      - my-network
       - db-network
     volumes:
       - ./ports.conf:/etc/apache2/ports.conf:z
